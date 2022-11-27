@@ -1,5 +1,4 @@
 const nameData = ['max', 'Schwarz']
-
 // const firstName = nameData[0]
 // const lastName = nameData[1]
 

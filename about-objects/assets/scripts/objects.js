@@ -3,7 +3,7 @@ const searchBtn = document.getElementById('search-btn')
 
 const movies = []
 
-const renderMovies = () => {
+const renderMovies = (searchTerm = '') => {
 	const movieList = document.getElementById('movie-list')
 	movieList.innerHTML = '' /* just done to save some time */
 
@@ -14,12 +14,14 @@ const renderMovies = () => {
 		movieList.classList.add('visible')
 	}
 
-	movies.forEach(movie => {
+	const filteredMovies = !searchTerm ? movies : movies.filter(movie => movie.info.title.includes(searchTerm))
+	filteredMovies.forEach(movie => {
 		const movieEl = document.createElement('li')
-		let text = movie.info.title + '-'
-		for (const key in movie.info) {
+		const { info } = movie
+		let text = info.title + '-'
+		for (const key in info) {
 			if (key != 'title') {
-				text += `${key}: ${movie.info[key]}`
+				text += `${key}: ${info[key]}`
 			}
 		}
 		movieEl.textContent = text
@@ -40,11 +42,17 @@ const addMoviehandler = () => {
 			title,
 			[extraName]: extraValue
 		},
-		id: Math.floor(Math.random() * 20000000000)
+		id: Math.floor(Math.random() * 20000000000).toString()
 	}
 
 	movies.push(newMovie)
 	renderMovies()
 }
 
+const searchMovieHandler = () => {
+	const searchTerm = document.getElementById('filter-title').value
+	renderMovies(searchTerm)
+}
+
 addMovieBtn.addEventListener('click', addMoviehandler)
+searchBtn.addEventListener('click', searchMovieHandler)
